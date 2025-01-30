@@ -50,3 +50,30 @@
     transform: translateY(0);
   }
 }
+
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.romantic-bg {
+  background: linear-gradient(
+    45deg,
+    #ff719a,
+    #ff8da1,
+    #ffa8b6,
+    #ffccd5,
+    #ffa8b6,
+    #ff8da1,
+    #ff719a
+  );
+  background-size: 300% 300%;
+  animation: gradientFlow 15s ease infinite;
+}

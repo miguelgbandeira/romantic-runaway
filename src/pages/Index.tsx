@@ -1,13 +1,16 @@
-import { useState, useEffect, useCallback } from 'react';
-import { toast } from '@/components/ui/use-toast';
-import { Heart } from 'lucide-react';
+import { useState, useEffect, useCallback } from "react";
+import { toast } from "@/components/ui/use-toast";
+import { Heart } from "lucide-react";
 
 const Index = () => {
   const [noButtonPosition, setNoButtonPosition] = useState({ x: 0, y: 0 });
   const [showCelebration, setShowCelebration] = useState(false);
+  const [hearts, setHearts] = useState<
+    Array<{ id: number; x: number; y: number }>
+  >([]);
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
-    const noButton = document.getElementById('no-button');
+    const noButton = document.getElementById("no-button");
     if (!noButton) return;
 
     const buttonRect = noButton.getBoundingClientRect();
@@ -28,51 +31,75 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [handleMouseMove]);
 
   const handleYesClick = () => {
     setShowCelebration(true);
+    // Create multiple floating hearts
+    for (let i = 0; i < 15; i++) {
+      const randomX = Math.random() * window.innerWidth;
+      setHearts((prev) => [
+        ...prev,
+        { id: Date.now() + i, x: randomX, y: window.innerHeight },
+      ]);
+    }
     toast({
       title: "Yay! 💖",
-      description: "I'm so happy you said yes!",
+      description: "You've made me the happiest person in the world!",
       duration: 5000,
     });
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-r from-[#ffd1d1] to-[#ff719a]">
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 romantic-bg relative overflow-hidden">
+      {/* Floating hearts */}
+      {hearts.map((heart) => (
+        <Heart
+          key={heart.id}
+          className="absolute text-white/80 animate-float"
+          style={{
+            left: `${heart.x}px`,
+            bottom: `-50px`,
+            width: `${Math.random() * 20 + 20}px`,
+            height: `${Math.random() * 20 + 20}px`,
+          }}
+        />
+      ))}
+
       {showCelebration && (
         <div className="fixed inset-0 pointer-events-none">
           <div className="absolute inset-0 flex items-center justify-center animate-celebrate">
-            <Heart className="w-32 h-32 text-red-500" fill="currentColor" />
+            <Heart className="w-32 h-32 text-white" fill="currentColor" />
           </div>
         </div>
       )}
-      
-      <h1 className="text-4xl md:text-6xl font-bold text-white text-center mb-12 animate-fade-in">
-        Do you want to be my Valentine?
-      </h1>
-      
-      <div className="flex gap-6 items-center">
-        <button
-          onClick={handleYesClick}
-          className="px-8 py-4 bg-white text-valentine-primary rounded-full font-bold text-xl hover:scale-110 transition-transform duration-200 shadow-lg"
-        >
-          Yes 💖
-        </button>
-        
-        <button
-          id="no-button"
-          className="px-8 py-4 bg-white/80 text-gray-500 rounded-full font-bold text-xl shadow-lg hover:bg-white/90"
-          style={{
-            transform: `translate(${noButtonPosition.x}px, ${noButtonPosition.y}px)`,
-            transition: 'transform 0.2s ease-out', // Made transition faster (from 0.3s to 0.2s)
-          }}
-        >
-          No 😢
-        </button>
+
+      <div className="max-w-md w-full bg-white/10 backdrop-blur-sm p-8 rounded-3xl shadow-xl border border-white/20">
+        <h1 className="text-4xl md:text-6xl font-bold text-white text-center mb-8 animate-fade-in">
+          Will you be my Valentine?
+        </h1>
+
+        <div className="flex gap-6 items-center justify-center">
+          <button
+            onClick={handleYesClick}
+            className="px-8 py-4 bg-white text-valentine-primary rounded-full font-bold text-xl hover:scale-110 transition-transform duration-200 shadow-lg hover:shadow-2xl"
+          >
+            Yes 💖
+          </button>
+
+          <button
+            id="no-button"
+            className="px-8 py-4 bg-white/80 text-gray-500 rounded-full font-bold text-xl shadow-lg hover:bg-white/90"
+            style={{
+              transform: `translate(${noButtonPosition.x}px, ${noButtonPosition.y}px)`,
+              transition: "transform 0.2s ease-out",
+            }}
+          >
+            No 😢
+          </button>
+        </div>
       </div>
     </div>
   );

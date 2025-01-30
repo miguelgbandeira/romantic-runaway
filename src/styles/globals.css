@@ -1,0 +1,28 @@
+@keyframes floatUp {
+  0% {
+    transform: translateY(0);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-100vh) rotate(${Math.random() * 360}deg);
+    opacity: 0;
+  }
+}
+
+.animate-float {
+  animation: floatUp 4s ease-out forwards;
+}
+
+.animate-celebrate {
+  animation: celebrate 1s ease-in-out infinite;
+}
+
+@keyframes celebrate {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
