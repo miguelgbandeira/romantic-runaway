@@ -19,10 +19,10 @@ const Index = () => {
     const deltaY = mouseY - (buttonRect.y + buttonRect.height / 2);
     const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
-    // Move button away if mouse is close
-    if (distance < 100) {
-      const moveX = (deltaX / distance) * -150;
-      const moveY = (deltaY / distance) * -150;
+    // Move button away if mouse is close (increased trigger distance from 100 to 150)
+    if (distance < 150) {
+      const moveX = (deltaX / distance) * -200; // Increased movement distance from 150 to 200
+      const moveY = (deltaY / distance) * -200; // Increased movement distance from 150 to 200
       setNoButtonPosition({ x: moveX, y: moveY });
     }
   }, []);
@@ -65,9 +65,10 @@ const Index = () => {
         
         <button
           id="no-button"
-          className="px-8 py-4 bg-white/80 text-gray-500 rounded-full font-bold text-xl transition-all duration-200 shadow-lg hover:bg-white/90"
+          className="px-8 py-4 bg-white/80 text-gray-500 rounded-full font-bold text-xl shadow-lg hover:bg-white/90"
           style={{
             transform: `translate(${noButtonPosition.x}px, ${noButtonPosition.y}px)`,
+            transition: 'transform 0.2s ease-out', // Made transition faster (from 0.3s to 0.2s)
           }}
         >
           No 😢
