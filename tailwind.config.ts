@@ -19,6 +19,7 @@ export default {
     },
     extend: {
       colors: {
+        border: "hsl(var(--border))",
         valentine: {
           primary: "#FF719A",
           secondary: "#FFA99F",
