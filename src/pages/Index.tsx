@@ -5,9 +5,24 @@ import { Heart } from "lucide-react";
 const Index = () => {
   const [noButtonPosition, setNoButtonPosition] = useState({ x: 0, y: 0 });
   const [showCelebration, setShowCelebration] = useState(false);
+  const [backgroundHearts, setBackgroundHearts] = useState<
+    Array<{ id: number; x: number; y: number; size: number; rotation: number }>
+  >([]);
   const [hearts, setHearts] = useState<
     Array<{ id: number; x: number; y: number }>
   >([]);
+
+  // Add background hearts on component mount
+  useEffect(() => {
+    const hearts = Array.from({ length: 20 }, (_, i) => ({
+      id: i,
+      x: Math.random() * 100, // percentage
+      y: Math.random() * 100, // percentage
+      size: Math.random() * 30 + 20, // pixels
+      rotation: Math.random() * 360, // degrees
+    }));
+    setBackgroundHearts(hearts);
+  }, []);
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     const noButton = document.getElementById("no-button");
@@ -54,6 +69,21 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 romantic-bg relative overflow-hidden">
+      {/* Background hearts */}
+      {backgroundHearts.map((heart) => (
+        <Heart
+          key={heart.id}
+          className="absolute text-white/20 animate-float-background"
+          style={{
+            left: `${heart.x}%`,
+            top: `${heart.y}%`,
+            width: `${heart.size}px`,
+            height: `${heart.size}px`,
+            transform: `rotate(${heart.rotation}deg)`,
+          }}
+        />
+      ))}
+
       {/* Floating hearts */}
       {hearts.map((heart) => (
         <Heart
@@ -76,8 +106,8 @@ const Index = () => {
         </div>
       )}
 
-      <div className="max-w-md w-full bg-white/10 backdrop-blur-sm p-8 rounded-3xl shadow-xl border border-white/20">
-        <h1 className="text-4xl md:text-6xl font-bold text-white text-center mb-8 animate-fade-in">
+      <div className="max-w-md w-full bg-white/20 backdrop-blur-md p-8 rounded-3xl shadow-xl border border-white/30">
+        <h1 className="text-4xl md:text-6xl font-bold text-white text-center mb-8 animate-fade-in drop-shadow-lg">
           Will you be my Valentine?
         </h1>
 

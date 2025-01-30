@@ -26,3 +26,26 @@
     transform: scale(1.2);
   }
 }
+
+@keyframes floatBackground {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translate(
+        ${Math.random() * 100 - 50}px,
+        ${Math.random() * 100 - 50}px
+      )
+      rotate(360deg);
+    opacity: 0.2;
+  }
+}
+
+.animate-float-background {
+  animation: floatBackground 20s ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
